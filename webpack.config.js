@@ -1,24 +1,27 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/main.js', // Your main JS file
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   },
-  mode: 'development',  // Switch to 'production' for production builds
+  mode: 'development', // or 'production'
   module: {
     rules: [
+      // Your loaders (e.g., for images, Babel, etc.)
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',  // Optional: if you want to use newer JS features
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        }
-      }
-    ]
-  }
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource'
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html', // Use your src/index.html as a template
+      filename: 'index.html'
+    })
+  ]
 };
